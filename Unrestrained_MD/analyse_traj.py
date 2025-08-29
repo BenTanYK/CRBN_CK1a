@@ -74,11 +74,17 @@ def obtain_dihedral(run_number, pos1, pos2, pos3, pos4):
 
     return mda.lib.distances.calc_dihedrals(pos1, pos2, pos3, pos4)
 
-def obtain_RMSD(run_number, res_range=[0,392]):
+def obtain_RMSD(run_number, res_range=[0,606], eq=False):
     u = mda.Universe('structures/complex.prmtop', f'results/run{run_number}/traj.dcd')
     protein = u.select_atoms("protein")
 
-    ref = protein
+    if eq==True:
+        u_ref = u = mda.Universe('equilibrated_structures/complex_eq.prmtop', 'equilibrated_structures/complex_eq.inpcrd')
+        ref = u_ref.select_atoms("protein")
+    
+    else:
+        ref = protein
+
     R_u =rms.RMSD(protein, ref, select=f'backbone and resid {res_range[0]}-{res_range[1]}')
     R_u.run()
 
@@ -88,7 +94,7 @@ def obtain_RMSD(run_number, res_range=[0,392]):
 
     return time, rmsd
 
-def save_RMSD(run_number, res_range=[0,392]):
+def save_RMSD(run_number, res_range=[0,606]):
     """
     Save the RMSD of a given run in a .csv file
     """
@@ -104,29 +110,31 @@ def save_RMSD(run_number, res_range=[0,392]):
 
     return df
 
-def obtain_RMSF(run_number, res_range=[0,392]):
+def obtain_RMSF(run_number, res_range=[0,606]):
     u = mda.Universe('structures/complex.prmtop', f'results/run{run_number}/traj.dcd')
     
-    average = align.AverageStructure(u, u, select='protein and name CA',
-                                 ref_frame=0).run()
-    
-    ref = average.results.universe
-    
-    average = align.AverageStructure(u, u, select='protein and name CA', ref_frame=0).run()
+    start, end = int(res_range[0]), int(res_range[1])
 
-    aligner = align.AlignTraj(u, ref,
-                            select='protein and name CA',
-                            in_memory=True).run()
+    alignment_selection = f'protein and name CA and resid {start}-{end}'
+    c_alphas = u.select_atoms(alignment_selection)
+    if len(c_alphas) == 0:
+        raise ValueError(f"No atoms selected with selection: '{alignment_selection}'")
 
-    c_alphas = u.select_atoms(f'protein and name CA and resid {res_range[0]}-{res_range[1]}')
-    R = rms.RMSF(c_alphas).run()
+    # build average structure 
+    avg = align.AverageStructure(u, select=alignment_selection, ref_frame=0)
+    avg.run()
+    ref = avg.results.universe
 
-    res = c_alphas.resids
-    rmsf = R.results.rmsf
+    # align trajectory in memory 
+    align.AlignTraj(u, ref, select=alignment_selection, in_memory=True).run()
 
-    return res, rmsf
+    # compute RMSF
+    R = rms.RMSF(c_alphas)
+    R.run()
 
-def save_RMSF(run_number, res_range=[0,392]):
+    return c_alphas.resids, R.results.rmsf
+
+def save_RMSF(run_number, res_range=[0,606]):
     """
     Save the RMSD of a given run in a .csv file
     """
@@ -152,13 +160,13 @@ def run_analysis(systems, k_values):
 
 def obtain_Boresch_dof(run_number, dof):
 
-    rec_group = FIXME
-    lig_group = FIXME
+    rec_group =  [539, 545, 562, 578, 1227, 1243, 1260, 2019, 3384, 3416, 3433, 3443, 3460, 3475, 3800, 3816, 3838, 3844, 3861, 3868, 3889, 3905, 4083, 4102, 4116, 4135, 4154, 4401, 4417, 4427, 4444, 4454, 4476, 4495, 4505, 4515, 4526, 4543, 4562, 4929]
+    lig_group =  [5064, 5071, 5078, 5100, 5387, 5406, 5420, 5439, 5453, 5467, 5474, 5489, 5504, 5881, 5903, 5922, 5941, 5958, 5965, 5972, 5988, 5995, 6022, 6028, 6045, 6064, 6088, 6112, 6133, 6292, 6309, 6321, 7241, 7248, 7272]
 
-    res_b = FIXME
-    res_c = FIXME
-    res_B = FIXME
-    res_C = FIXME
+    res_b = 90
+    res_c = 172 
+    res_B = 424 
+    res_C = 508 
 
     group_a = u.atoms[rec_group]
     group_b = u.atoms[[obtain_CA_idx(u, res_b)]]
@@ -191,37 +199,78 @@ def obtain_Boresch_dof(run_number, dof):
         return obtain_dihedral(run_number, indices[0], indices[1], indices[2], indices[3])
 
 for n_run in [1,2,3]:
-    print(f"\nGenerating RMSD for run {n_run}")
-    save_RMSD(n_run)
-    print(f"\nGenerating RMSF for  run {n_run}")
-    save_RMSF( n_run)   
+    # # complex
+    # print(f"\nGenerating RMSD for run {n_run}")
+    # save_RMSD(n_run)
 
-# dof = str(sys.argv[1])
+    # Complex wrt equilibrated structure
+    time, RMSD = obtain_RMSD(n_run, eq=True)
+    df = pd.DataFrame()
+    df['Time (ns)'] = time
+    df['RMSD (Angstrom)'] = RMSD
+    filename = 'RMSD_eq_ref.csv'
+    df.to_csv(f"results/run{n_run}/{filename}")
+
+    # # CRBN
+    # time, RMSD = obtain_RMSD(n_run, [0,312])
+    # df = pd.DataFrame()
+    # df['Time (ns)'] = time
+    # df['RMSD (Angstrom)'] = RMSD
+    # filename = 'RMSD_CRBN.csv'
+    # df.to_csv(f"results/run{n_run}/{filename}")
+
+    # # CK1a
+    # time, RMSD = obtain_RMSD(n_run, [314, 606])
+    # df = pd.DataFrame()
+    # df['Time (ns)'] = time
+    # df['RMSD (Angstrom)'] = RMSD
+    # filename = 'RMSD_CK1a.csv'
+    # df.to_csv(f"results/run{n_run}/{filename}")
+
+
+    # # complex
+    # print(f"\nGenerating RMSF for  run {n_run}")
+    # save_RMSF(n_run)   
+
+    # CRBN
+    # residx, RMSF = obtain_RMSF(n_run, [0,312])
+    # df = pd.DataFrame()
+    # df['Residue index'] = residx
+    # df['RMSF (Angstrom)'] = RMSF
+    # df.to_csv(f"results/run{n_run}/RMSF_CRBN.csv")
+
+    # # CK1a
+    # residx, RMSF = obtain_RMSF(n_run, [314,606])
+    # df = pd.DataFrame()
+    # df['Residue index'] = residx
+    # df['RMSF (Angstrom)'] = RMSF
+    # df.to_csv(f"results/run{n_run}/RMSF_CK1a.csv") 
 
 for run_number in [1,2,3]:
 
-    # for dof in ['thetaA', 'thetaB', 'phiA', 'phiB', 'phiC']:
-    if os.path.exists(f'results/run{run_number}/{dof}.pkl'):
-        continue
-    else:
-        print(f"Performing Boresch analysis for {dof} run {run_number}")
+    for dof in ['thetaA', 'thetaB', 'phiA', 'phiB', 'phiC']:
 
-        u = mda.Universe('structures/complex.prmtop', f'results/run{run_number}/traj.dcd')
+        if os.path.exists(f'results/run{run_number}/{dof}.pkl'):
+            continue
+        else:
+            print(f"Performing Boresch analysis for {dof} run {run_number}")
 
-        vals = []
+            u = mda.Universe('structures/complex.prmtop', f'results/run{run_number}/traj.dcd')
 
-        for ts in tqdm(u.trajectory, total=u.trajectory.n_frames, desc='Frames analysed'):
-            vals.append(obtain_Boresch_dof(run_number, dof))
+            vals = []
 
-        frames = np.arange(1, len(vals) + 1)
+            for ts in tqdm(u.trajectory, total=u.trajectory.n_frames, desc='Frames analysed'):
+                vals.append(obtain_Boresch_dof(run_number, dof))
 
-        dof_data = {
-            'Frames': frames,
-            'Time (ns)': np.round(0.01 * frames, 6),
-            'DOF values': vals
-        }
+            frames = np.arange(1, len(vals) + 1)
 
-        # Save interface data to pickle
-        file = f'results/run{run_number}/{dof}.pkl'
-        with open(file, 'wb') as f:
-            pickle.dump(dof_data, f)
+            dof_data = {
+                'Frames': frames,
+                'Time (ns)': np.round(0.01 * frames, 6),
+                'DOF values': vals
+            }
+
+            # Save interface data to pickle
+            file = f'results/run{run_number}/{dof}.pkl'
+            with open(file, 'wb') as f:
+                pickle.dump(dof_data, f)
