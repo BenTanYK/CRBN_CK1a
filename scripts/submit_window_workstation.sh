@@ -28,6 +28,6 @@ done
 shift $((OPTIND -1))
 
 source /home/btan/miniconda3/etc/profile.d/conda.sh
-conda activate openbiosim
+conda activate openmm7.7
 
 python run_window.py $RNUMBER $JNUMBER

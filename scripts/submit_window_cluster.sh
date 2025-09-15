@@ -33,6 +33,6 @@ shift $((OPTIND -1))
 module load cuda
 
 source ~/software/miniconda3/etc/profile.d/conda.sh
-conda activate openmm
+conda activate openmm7.7
 
 srun python run_window.py $RNUMBER $JNUMBER
