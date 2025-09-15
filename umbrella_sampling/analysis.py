@@ -9,6 +9,7 @@ import math
 import os
 import red
 import shutil
+import warnings
 import subprocess
 from tqdm import tqdm
 
@@ -50,7 +51,7 @@ def obtain_dirpath(free_energy_step, restraint_type, dof, equilibration, samplin
     dirpath = f"{os.getcwd()}/{free_energy_step}/results/{restraint_type}_RMSD"
     # dirpath = f"{os.getcwd()}/{free_energy_step}/results/{restraint_type}_RMSD"
 
-    if free_energy_step in ('boresch_dof', 'RMSD'):
+    if free_energy_step in ('Boresch', 'RMSD'):
         dirpath+=f"/{dof}"
 
     dirpath+=f"/run{run_number}/"
@@ -110,7 +111,7 @@ def truncate_data(truncation_time, free_energy_step, restraint_type, sampling_ti
         Options are:
         - "separation" : radial BD2-DCAF16 separation
         - "RMSD" : applying/removing conformational restraints
-        - "boresch_dof" : applying orientational restraints in the bound state
+        - "Boresch" : applying orientational restraints in the bound state
     restraint_type : str
         Type of RMSD restraint applied to the system
         Options are: 
@@ -131,7 +132,7 @@ def truncate_data(truncation_time, free_energy_step, restraint_type, sampling_ti
         - DCAF16_only (bound)
         - BD2withDCAF16 (bound)
         - DCAF16withBD2 (bound)
-        Options for free_energy_step = "boresch_dof":
+        Options for free_energy_step = "Boresch":
         - thetaA
         - thetaB
         - phiA
@@ -150,7 +151,7 @@ def truncate_data(truncation_time, free_energy_step, restraint_type, sampling_ti
     try:
         total_time = obtain_sampling_time(free_energy_step, restraint_type, dof, run_number)
     except:
-        raise ValueError('Select one of the following free energy steps: "separation", "RMSD", "boresch_dof"!')
+        raise ValueError('Select one of the following free energy steps: "separation", "RMSD", "Boresch"!')
 
     # Check that sampling time does not exeed the total time
     if isinstance(truncation_time, int):
@@ -213,7 +214,7 @@ def apply_RED(free_energy_step, restraint_type, sampling_time=None, dof=None, ru
         # Assign the sampling time
         total_time = obtain_sampling_time(free_energy_step, restraint_type, dof, run_number)
     except Exception as e:
-        raise ValueError('Select one of the following free energy steps: "separation", "RMSD", "boresch_dof"!') from e
+        raise ValueError('Select one of the following free energy steps: "separation", "RMSD", "Boresch"!') from e
 
     # Directory path  
     inputpath = obtain_dirpath(free_energy_step, restraint_type, dof, None, None, run_number)
@@ -301,22 +302,23 @@ def plot_timeseries(CV_value, free_energy_step, restraint_type, dof=None, equili
     try:
         total_time = obtain_sampling_time(free_energy_step, restraint_type, dof, run_number)
     except:
-        raise ValueError('Select one of the following free energy steps: "separation", "RMSD", "boresch_dof"!')
+        raise ValueError('Select one of the following free energy steps: "separation", "RMSD", "Boresch"!')
 
     # Reading in files
     dirpath = obtain_dirpath(free_energy_step, restraint_type, dof, None, sampling_time, run_number)
 
     full_data = np.loadtxt(f"{dirpath}/{CV_value}.txt")[:,1]
-    RED_data = np.loadtxt(f"{dirpath}/RED/{CV_value}.txt")[:,1]
     
-    RED_idx = len(full_data) - len(RED_data)
-
     time = np.linspace(0, total_time, len(full_data))
 
     plt.plot(time, full_data, label='Full sampling')
-    plt.vlines(time[RED_idx], ymin=0.5*np.min(full_data), ymax=1.1*np.max(full_data), colors='r', linestyle='dashed', label='RED truncation')
+
+    if equilibration == 'RED':
+        RED_data = np.loadtxt(f"{dirpath}/RED/{CV_value}.txt")[:,1]
+        RED_idx = len(full_data) - len(RED_data)
+        plt.vlines(time[RED_idx], ymin=0.5*np.min(full_data), ymax=1.1*np.max(full_data), colors='r', linestyle='dashed', label='RED truncation')
     
-    if equilibration != 'RED' and equilibration>0:
+    elif isinstance(equilibration, int) and equilibration>0:
         truncation_idx = int((equilibration/total_time)*len(full_data))
         plt.vlines(time[truncation_idx], ymin=0.5*np.min(full_data), ymax=1.1*np.max(full_data), colors='k', linestyle='dotted', label=f'{equilibration} ns truncation')
     
@@ -360,7 +362,7 @@ def generate_metafile(free_energy_step, restraint_type, dof=None, equilibration=
 
     if force_constant:
         k_CV = force_constant
-    elif free_energy_step == 'boresch_dof':
+    elif free_energy_step == 'Boresch':
         k_CV = 100 # 10 kcal mol-1/rad^2
     else:
         k_CV = 1000 # 10 kcal mol-1/Angstrom^2
@@ -402,7 +404,7 @@ def generate_metafile(free_energy_step, restraint_type, dof=None, equilibration=
             metafilelines.append(metafileline)                
 
         if plot==True:
-            if dof != 'boresch_dof':
+            if dof != 'Boresch':
                 plt.hist(10*data[:,1], bins=30, alpha=0.6, label=f"{CV_value}")
             else:
                 plt.hist(data[:,1], bins=30, alpha=0.6, label=f"{CV_value}")
@@ -459,7 +461,6 @@ def perform_WHAM(wham_params, free_energy_step, restraint_type, dof=None, equili
 
     try:
         subprocess.run(command, check=True, shell=True)
-        print(f"Successfully ran {command}")
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
 
@@ -497,7 +498,7 @@ def obtain_PMF(free_energy_step, restraint_type, dof=None, equilibration=0, samp
     y=pmf[:,1]
 
     if plot == True:
-        if free_energy_step != 'boresch_dof':
+        if free_energy_step != 'Boresch':
             plt.plot(10*x,y) #Units of Angstrom 
         else:
             plt.plot(x,y)
@@ -506,93 +507,126 @@ def obtain_PMF(free_energy_step, restraint_type, dof=None, equilibration=0, samp
 
     return x,y
 
-def obtain_av_PMF(free_energy_step, restraint_type, dof=None, equilibration=0, sampling_time=None, plot_indiv=False, plot_av=True):
+def obtain_av_PMF(runs, free_energy_step, restraint_type, dof=None,
+                  equilibration=0, sampling_time=None,
+                  plot_indiv=False, plot_av=True):
     """
     Generate average PMF and corresponding errors
+
     Parameters
     ----------
-    free_energy_step  : str
+    runs : list[int] or list[str]
+        List of run indices (e.g. [1,2,3]) to combine into an average
+    free_energy_step : str
         Section of the thermodynamic cycle where US simulation is performed
     restraint_type : str
         Type of RMSD restraint applied to the system
-    dof : str
-        Degree of freedom for which to generate metafile
-    equilibration : str or int, Optional, default=0
-        Type of data truncation applied ('RED' or int)          
-    run_number : int, default=1
-        Specify the replicate
-    plot_indiv : bool, default = False
+    dof : str, optional
+        Degree of freedom for which to generate metafile (required if free_energy_step in ('Boresch','RMSD'))
+    equilibration : 'RED' or int or 0, optional
+        Type / amount of equilibration truncation ('RED' or integer number of ns). Default 0 (no equilibration folder)
+    sampling_time : int or None, optional
+        Sampling time in ns (appended to equilibration folder if specified)
+    plot_indiv : bool, default=False
         Plot the individual PMFs for all replicas
-    plot_av : bool, default = True
+    plot_av : bool, default=True
         Plot the average PMFs with the corresponding standard error
 
     Returns
     -------
-    x : array
-        CV values
-    PMF_av : array
-        Average PMF
-    PMF_err : array
+    x : ndarray
+        CV values (from pmf.txt first column)
+    PMF_av : ndarray
+        Average PMF (kcal/mol)
+    PMF_err : ndarray
         Standard error in the mean PMF
     """
+    # Basic validation
+    if free_energy_step in ('Boresch', 'RMSD') and not dof:
+        raise ValueError("dof must be provided when free_energy_step is 'Boresch' or 'RMSD'")
 
-    # Search for the directory storing all results for a given US simulation
-    resultspath = f"{os.getcwd()}/{free_energy_step}/results/{restraint_type}_RMSD"
-    # resultspath = f"{os.getcwd()}/{free_energy_step}/results/{restraint_type}_RMSD"
+    resultspath = os.path.join(os.getcwd(), free_energy_step, 'results', f"{restraint_type}_RMSD")
+    if free_energy_step in ('Boresch', 'RMSD'):
+        resultspath = os.path.join(resultspath, dof)
 
-    if free_energy_step in ('boresch_dof', 'RMSD'):
-        resultspath+=f"/{dof}"
+    if not os.path.isdir(resultspath):
+        raise FileNotFoundError(f"Result path does not exist: {resultspath}")
 
-    n_runs = len([directory for directory in os.listdir(resultspath) if directory.startswith('run')])
-
-    # List to store all PMFs
     pmfs = []
+    x = None
 
-    if plot_indiv == True:
-        plt.figure(figsize=(5,4), dpi=200)
+    if plot_indiv:
+        plt.figure(figsize=(6,4), dpi=200)
         plt.title('Individual PMFs')
 
-    for n_run in range(1,n_runs+1):
+    for n_run in runs:
+        dirpath = os.path.join(resultspath, f"run{n_run}")
 
-        dirpath = f"{resultspath}/run{n_run}"
-
+        # Build equilibration/sampling subfolder if requested
         if equilibration == 'RED':
-            dirpath+=f"/RED"
-        elif isinstance(equilibration, int) and equilibration>0:
-            dirpath+=f"/{equilibration}ns_equil"
+            dirpath = os.path.join(dirpath, 'RED')
+        elif isinstance(equilibration, int) and equilibration > 0:
+            sub = f"{equilibration}ns_equil"
+            if isinstance(sampling_time, int):
+                sub += f"_{sampling_time}ns_sampling"
+            dirpath = os.path.join(dirpath, sub)
+        else:
+            # no equilibration subfolder; if sampling_time alone is provided, optionally support it:
+            if isinstance(sampling_time, int):
+                sub = f"{sampling_time}ns_sampling"
+                dirpath = os.path.join(dirpath, sub)
 
-        if equilibration and isinstance(sampling_time, int):
-            dirpath+=f"_{sampling_time}ns_sampling"
+        pmf_file = os.path.join(dirpath, 'pmf.txt')
+        if not os.path.isfile(pmf_file):
+            warnings.warn(f"pmf.txt not found for run {n_run} at {pmf_file}; skipping this run.")
+            continue
 
-        pmf = np.loadtxt(f"{dirpath}/pmf.txt") #Load pmf.txt
+        try:
+            pmf = np.loadtxt(pmf_file)
+        except Exception as exc:
+            warnings.warn(f"Failed to load {pmf_file} for run {n_run}: {exc}; skipping this run.")
+            continue
+
+        if pmf.ndim != 2 or pmf.shape[1] < 2:
+            warnings.warn(f"Unexpected pmf.txt shape for run {n_run} ({pmf.shape}); skipping.")
+            continue
+
         pmfs.append(pmf[:,1])
         x = pmf[:,0]
 
-        if plot_indiv == True:
+        if plot_indiv:
             plt.plot(x, pmf[:,1], label=f"Run {n_run}")
 
-    if plot_indiv == True: 
-        plt.legend()
+    # After loop: show individual plot if requested
+    if plot_indiv:
+        plt.xlabel(free_energy_step)
         plt.ylabel('PMF (kcal/mol)')
-        plt.ylabel(free_energy_step)
+        plt.legend()
+        plt.tight_layout()
         plt.show()
 
-    # Calculate average and st dev
-    pmfs = np.vstack(pmfs)
-    av = np.mean(pmfs, axis=0)
-    err = np.std(pmfs, axis=0)/np.sqrt(n_runs)
+    if len(pmfs) == 0:
+        raise RuntimeError("No PMF data was loaded for any run. Check paths and run identifiers.")
 
-    if plot_av == True:
-        plt.figure(figsize=(5,4), dpi=200)
+    pmfs_arr = np.vstack(pmfs)            # shape (n_loaded_runs, n_points)
+    n_loaded = pmfs_arr.shape[0]
+
+    av = np.mean(pmfs_arr, axis=0)
+    # standard error of the mean; use population std (ddof=0) unless you want sample std (ddof=1)
+    err = np.std(pmfs_arr, axis=0, ddof=0) / np.sqrt(n_loaded)
+
+    if plot_av:
+        plt.figure(figsize=(6,4), dpi=200)
         plt.title('Average PMF')
-        if free_energy_step == 'boresch_dof':
-            plt.plot(x, av)
-            plt.fill_between(x , av - err, av + err, color='grey', alpha=0.4)
+        if free_energy_step == 'Boresch':
+            x_plot = x
         else:
-            plt.plot(10*x, av) # Units of AA
-            plt.fill_between(10*x , av - err, av + err, color='grey', alpha=0.4)            
-        plt.ylabel('PMF (kcal/mol)')
+            x_plot = 10 * x  # convert to Å if needed (original code used 10*x)
+        plt.plot(x_plot, av, color='k')
+        plt.fill_between(x_plot, av - err, av + err, color='grey', alpha=0.4)
         plt.xlabel(free_energy_step)
+        plt.ylabel('PMF (kcal/mol)')
+        plt.tight_layout()
         plt.show()
 
     return x, av, err
@@ -635,39 +669,6 @@ def obtain_integrands(forceConstant, free_energy_step, restraint_type, dof=None,
 
     return x, numerator, denominator
 
-def RMSDContribution(forceConstant, free_energy_step, restraint_type, dof=None, equilibration=0, sampling_time=None, run_number=1, unbound=False):
-    """
-    Calculate the contribution of RMSD restraints
-    """
-    
-    dirpath = obtain_dirpath(free_energy_step, restraint_type, dof, equilibration, sampling_time, run_number)
-
-    pmf = np.loadtxt(f'{dirpath}/pmf.txt')
-
-    mask = np.isfinite(pmf[:,1]) # Boolean mask to remove inf values 
-    pmf = pmf[:,0][mask], pmf[:,1][mask]
-
-    width = pmf[0][1] - pmf[0][0]
-
-    restraintCenter = 0
-
-    # integration
-    numerator = 0
-    denominator = 0
-    for x, y in zip(pmf[0], pmf[1]):
-        numerator += math.exp(-beta * y)
-        denominator += math.exp((-beta) * (y + 0.5 * forceConstant * ((x - restraintCenter)**2)))
-    
-    contribution = math.log(numerator / denominator) / beta
-
-    print(f"Numerator is {numerator}\n")
-    print(f"Denominator is {denominator}\n")
-    
-    if unbound:
-        return contribution
-    else:
-        return -contribution
-
 def obtain_av_plateau(x, av, err, plateau_bounds=[2.5, 3.0]):
     """
     Calculate the average plateau value and the average standard error of the plateau region
@@ -680,5 +681,76 @@ def obtain_av_plateau(x, av, err, plateau_bounds=[2.5, 3.0]):
 
     return np.average(av[start_idx:end_idx]), np.average(err[start_idx:end_idx])
 
-def obtain_sep_free_energy(x, pmf):
-    FIXME
+def RMSDContribution(x, pmf, k_rmsd, unbound=False):
+    """
+    Calculate the contribution of RMSD restraints
+    Make sure units of k_rmsd are consistent
+    """
+    pmf = np.array([x,pmf])
+
+    # mask = np.isfinite(pmf[:,1]) # Boolean mask to remove inf values 
+    # pmf = pmf[:,0][mask], pmf[:,1][mask]
+
+    width = pmf[0][1] - pmf[0][0]
+
+    restraintCenter = 0
+
+    # integration
+    numerator = 0
+    denominator = 0
+    for x, y in zip(pmf[0], pmf[1]):
+        numerator += math.exp(-beta * y)
+        denominator += math.exp((-beta) * (y + 0.5 * k_rmsd * ((x - restraintCenter)**2)))
+    
+    contribution = math.log(numerator / denominator) / beta
+
+    # print(f"Numerator is {numerator}\n")
+    # print(f"Denominator is {denominator}\n")
+    
+    if unbound:
+        return contribution
+    else:
+        return -contribution
+
+def BoreschContribution(x, pmf, theta_0, k_restraint):
+    """Calculate the free energy contribution from applying a Boresch restraint"""
+    pmf = np.array([x,pmf])
+    
+    width = pmf[0][1] - pmf[0][0]
+
+    restraint_center = theta_0
+
+    numerator = 0
+    denominator = 0
+    for x, y in zip(pmf[0], pmf[1]):
+        numerator += width*math.exp(-beta*y)
+        denominator += width*math.exp((-beta)*(y+0.5*k_restraint*((x-restraint_center)**2)))
+    
+    contribution = math.log(numerator/denominator)/beta
+
+    return -contribution
+
+def standard_state_correction(r_star, theta_a_min, theta_b_min, k_boresch):
+    
+    corr = (r_star**2)*math.sin(theta_a_min)*math.sin(theta_b_min)*(2*np.pi/beta)**2.5/(8*(np.pi**2)*(4*np.pi*radius_sphere**2)*(k_boresch)**2.5)
+
+    return -1/(beta)*math.log(corr)
+
+def SepContribution(x, pmf, r_star):
+
+    pmf = np.array([x,pmf])
+    
+    w_r_star = pmf[1][0]
+    for x, y in zip(pmf[0], pmf[1]):
+        if x >= r_star:
+            w_r_star = y
+            break
+        
+    width = pmf[0][1] - pmf[0][0]
+    I = 0
+    for x, y in zip(pmf[0], pmf[1]):
+        I += width*math.exp(-beta*(y-w_r_star))
+        if x >= r_star:
+            break
+
+    return -1/(beta)*math.log(3*I/radius_sphere)
