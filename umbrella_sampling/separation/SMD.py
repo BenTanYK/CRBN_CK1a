@@ -14,7 +14,7 @@ import pandas as pd
 """r0 values to save"""
 
 windows0 = np.arange(0.90, 2.11, 0.05)
-windows1 = np.arange(2.2, 6.11, 0.1)
+windows1 = np.arange(2.2, 5.11, 0.1)
 windows = np.append(windows0, windows1)
 
 """System setup"""
@@ -286,7 +286,7 @@ for i in range(1, n_red+1):
 """Protein-protein unbinding"""
 
 # Total number of steps
-total_steps = 1000000
+total_steps = 500000
 
 # Number of steps to run between incrementing r_0
 increment_steps = 100
