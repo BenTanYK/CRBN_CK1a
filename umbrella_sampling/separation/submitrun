@@ -26,8 +26,8 @@ if [ "$run_loc_int" -eq 0 ]; then
         rm jobid.txt
 
         jobname=$r0
-        outname=$r0".out"
-        sbatch -o "outfiles/"$outname  $submission_dir"/submit_window_workstation.sh" -r $r0 -j $jobid
+        outname="${r0}_${jobid}.out"
+        sbatch -J $jobname  -o "outfiles/"$outname  $submission_dir"/submit_window_workstation.sh" -r $r0 -j $jobid
     done
 fi
 
@@ -44,8 +44,8 @@ if [ "$run_loc_int" -eq 1 ]; then
         rm jobid.txt
 
         jobname=$r0
-        outname=$r0".out"
-        sbatch -o "outfiles/"$outname  $submission_dir"/submit_window_cluster.sh" -r $r0 -j $jobid
+        outname="${r0}_${jobid}.out"
+        sbatch -J $jobname -o "outfiles/"$outname  $submission_dir"/submit_window_cluster.sh" -r $r0 -j $jobid
     done
 fi
 
@@ -63,8 +63,8 @@ if [ "$run_loc_int" -eq 2 ]; then
 
 
         jobname="CV$r0"
-        outname="outfiles/CV${r0}_${jobid}.out"
-        errname="outfiles/CV${r0}_${jobid}.err"
+        outname="outfiles/CV${$r0}_${jobid}.out"
+        errname="outfiles/CV${$r0}_${jobid}.err"
         qsub -N $jobname -o $outname -e $errname $submission_dir"/submit_window_eddie.sh" -r $r0 -j $jobid
     done
 fi

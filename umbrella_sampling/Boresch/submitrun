@@ -62,8 +62,8 @@ if [ "$run_loc_int" -eq 2 ]; then
         rm jobid.txt
 
         jobname="CV"$CV0
-        outname="${CV0}_${jobid}.out"
-        errname="${CV0}_${jobid}.err"
+        outname="outfiles/CV${$CV0}_${jobid}.out"
+        errname="outfiles/CV${$CV0}_${jobid}.err"
         qsub -N $jobname -o $outname -e $errname $submission_dir"/submit_window_eddie.sh" -r $CV0 -j $jobid
     done
 fi
