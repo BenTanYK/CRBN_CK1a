@@ -731,12 +731,18 @@ def BoreschContribution(x, pmf, theta_0, k_restraint):
     return -contribution
 
 def standard_state_correction(r_star, theta_a_min, theta_b_min, k_boresch):
+    """
+    Calculate the free energy contribution for release of the separated proteins to the standard state 
+    """
     
     corr = (r_star**2)*math.sin(theta_a_min)*math.sin(theta_b_min)*(2*np.pi/beta)**2.5/(8*(np.pi**2)*(4*np.pi*radius_sphere**2)*(k_boresch)**2.5)
 
     return -1/(beta)*math.log(corr)
 
 def SepContribution(x, pmf, r_star):
+    """
+    Integrate the separation PMF to obtain the free energy contribution of separating the restrained proteins
+    """
 
     pmf = np.array([x,pmf])
     

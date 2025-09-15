@@ -1,13 +1,13 @@
 """Run parameters"""
-run_number = 1
+run_number = 3
 run_location = 0 # workstation=0, cluster=1, eddie=2
-dof = phiC # phiA, thetaB, phiA, phiB, phiC
+dof = thetaA # phiA, thetaB, phiA, phiB, phiC
 
 """MD parameters"""
 timestep = 4 # fs
 save_traj = False # True or False
-equilibration_time = 0 # ns
-sampling_time = 1 # ns
+equilibration_time = 1 # ns
+sampling_time = 5 # ns
 n_steps_between_sampling = 125 
 
 """Restraint parameters"""
