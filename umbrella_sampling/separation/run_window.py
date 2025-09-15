@@ -67,10 +67,10 @@ if not os.path.exists(savedir): # Make save directory if it doesn't yet exist
 """Selection tuple for restraint type"""
 
 if restraint_type == 'backbone':
-    restraint_tuple = ('C', 'N', 'CA')
+    restraint_tuple = ['C', 'N', 'CA']
 
 elif restraint_type == 'CA':
-    restraint_tuple = ('CA')
+    restraint_tuple = ['CA']
 
 elif restraint_type != 'heavy_atom':
     raise ValueError('Select one of the following restraint type options:  heavy_atom, backbone, CA')
