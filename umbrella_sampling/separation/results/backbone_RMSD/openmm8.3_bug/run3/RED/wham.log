@@ -1,0 +1,26 @@
+# /home/btan/Software/WHAM/wham/wham/wham 0.0 4.5 200 1e-06 300 0 /home/btan/Documents/CRBN_CK1a/umbrella_sampling/separation/results/backbone_RMSD/run3/RED/metafile.txt /home/btan/Documents/CRBN_CK1a/umbrella_sampling/separation/results/backbone_RMSD/run3/RED/pmf.txt
+#Number of windows = 21
+# Dumping simulation biases, in the metadata file order 
+# Window  F (free energy units)
+# 0	-nan
+# 1	-nan
+# 2	-nan
+# 3	-nan
+# 4	-nan
+# 5	-nan
+# 6	-nan
+# 7	-nan
+# 8	-nan
+# 9	-nan
+# 10	-nan
+# 11	-nan
+# 12	-nan
+# 13	-nan
+# 14	-nan
+# 15	-nan
+# 16	-nan
+# 17	-nan
+# 18	-nan
+# 19	-nan
+# 20	-nan
+# No MC error analysis requested

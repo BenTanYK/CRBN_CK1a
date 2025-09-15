@@ -1,0 +1,223 @@
+#Coor		Free	+/-		Prob		+/-
+0.011250	-nan	-nan	-nan	-nan
+0.033750	-nan	-nan	-nan	-nan
+0.056250	-nan	-nan	-nan	-nan
+0.078750	-nan	-nan	-nan	-nan
+0.101250	-nan	-nan	-nan	-nan
+0.123750	-nan	-nan	-nan	-nan
+0.146250	-nan	-nan	-nan	-nan
+0.168750	-nan	-nan	-nan	-nan
+0.191250	-nan	-nan	-nan	-nan
+0.213750	-nan	-nan	-nan	-nan
+0.236250	-nan	-nan	-nan	-nan
+0.258750	-nan	-nan	-nan	-nan
+0.281250	-nan	-nan	-nan	-nan
+0.303750	-nan	-nan	-nan	-nan
+0.326250	-nan	-nan	-nan	-nan
+0.348750	-nan	-nan	-nan	-nan
+0.371250	-nan	-nan	-nan	-nan
+0.393750	-nan	-nan	-nan	-nan
+0.416250	-nan	-nan	-nan	-nan
+0.438750	-nan	-nan	-nan	-nan
+0.461250	-nan	-nan	-nan	-nan
+0.483750	-nan	-nan	-nan	-nan
+0.506250	-nan	-nan	-nan	-nan
+0.528750	-nan	-nan	-nan	-nan
+0.551250	-nan	-nan	-nan	-nan
+0.573750	-nan	-nan	-nan	-nan
+0.596250	-nan	-nan	-nan	-nan
+0.618750	-nan	-nan	-nan	-nan
+0.641250	-nan	-nan	-nan	-nan
+0.663750	-nan	-nan	-nan	-nan
+0.686250	-nan	-nan	-nan	-nan
+0.708750	-nan	-nan	-nan	-nan
+0.731250	-nan	-nan	-nan	-nan
+0.753750	-nan	-nan	-nan	-nan
+0.776250	-nan	-nan	-nan	-nan
+0.798750	-nan	-nan	-nan	-nan
+0.821250	-nan	-nan	-nan	-nan
+0.843750	-nan	-nan	-nan	-nan
+0.866250	-nan	-nan	-nan	-nan
+0.888750	-nan	-nan	-nan	-nan
+0.911250	-nan	-nan	-nan	-nan
+0.933750	-nan	-nan	-nan	-nan
+0.956250	-nan	-nan	-nan	-nan
+0.978750	-nan	-nan	-nan	-nan
+1.001250	-nan	-nan	-nan	-nan
+1.023750	-nan	-nan	-nan	-nan
+1.046250	-nan	-nan	-nan	-nan
+1.068750	-nan	-nan	-nan	-nan
+1.091250	-nan	-nan	-nan	-nan
+1.113750	-nan	-nan	-nan	-nan
+1.136250	-nan	-nan	-nan	-nan
+1.158750	-nan	-nan	-nan	-nan
+1.181250	-nan	-nan	-nan	-nan
+1.203750	-nan	-nan	-nan	-nan
+1.226250	-nan	-nan	-nan	-nan
+1.248750	-nan	-nan	-nan	-nan
+1.271250	-nan	-nan	-nan	-nan
+1.293750	-nan	-nan	-nan	-nan
+1.316250	-nan	-nan	-nan	-nan
+1.338750	-nan	-nan	-nan	-nan
+1.361250	-nan	-nan	-nan	-nan
+1.383750	-nan	-nan	-nan	-nan
+1.406250	-nan	-nan	-nan	-nan
+1.428750	-nan	-nan	-nan	-nan
+1.451250	-nan	-nan	-nan	-nan
+1.473750	-nan	-nan	-nan	-nan
+1.496250	-nan	-nan	-nan	-nan
+1.518750	-nan	-nan	-nan	-nan
+1.541250	-nan	-nan	-nan	-nan
+1.563750	-nan	-nan	-nan	-nan
+1.586250	-nan	-nan	-nan	-nan
+1.608750	-nan	-nan	-nan	-nan
+1.631250	-nan	-nan	-nan	-nan
+1.653750	-nan	-nan	-nan	-nan
+1.676250	-nan	-nan	-nan	-nan
+1.698750	-nan	-nan	-nan	-nan
+1.721250	-nan	-nan	-nan	-nan
+1.743750	-nan	-nan	-nan	-nan
+1.766250	-nan	-nan	-nan	-nan
+1.788750	-nan	-nan	-nan	-nan
+1.811250	-nan	-nan	-nan	-nan
+1.833750	-nan	-nan	-nan	-nan
+1.856250	-nan	-nan	-nan	-nan
+1.878750	-nan	-nan	-nan	-nan
+1.901250	-nan	-nan	-nan	-nan
+1.923750	-nan	-nan	-nan	-nan
+1.946250	-nan	-nan	-nan	-nan
+1.968750	-nan	-nan	-nan	-nan
+1.991250	-nan	-nan	-nan	-nan
+2.013750	-nan	-nan	-nan	-nan
+2.036250	-nan	-nan	-nan	-nan
+2.058750	-nan	-nan	-nan	-nan
+2.081250	-nan	-nan	-nan	-nan
+2.103750	-nan	-nan	-nan	-nan
+2.126250	-nan	-nan	-nan	-nan
+2.148750	-nan	-nan	-nan	-nan
+2.171250	-nan	-nan	-nan	-nan
+2.193750	-nan	-nan	-nan	-nan
+2.216250	-nan	-nan	-nan	-nan
+2.238750	-nan	-nan	-nan	-nan
+2.261250	-nan	-nan	-nan	-nan
+2.283750	-nan	-nan	-nan	-nan
+2.306250	-nan	-nan	-nan	-nan
+2.328750	-nan	-nan	-nan	-nan
+2.351250	-nan	-nan	-nan	-nan
+2.373750	-nan	-nan	-nan	-nan
+2.396250	-nan	-nan	-nan	-nan
+2.418750	-nan	-nan	-nan	-nan
+2.441250	-nan	-nan	-nan	-nan
+2.463750	-nan	-nan	-nan	-nan
+2.486250	-nan	-nan	-nan	-nan
+2.508750	-nan	-nan	-nan	-nan
+2.531250	-nan	-nan	-nan	-nan
+2.553750	-nan	-nan	-nan	-nan
+2.576250	-nan	-nan	-nan	-nan
+2.598750	-nan	-nan	-nan	-nan
+2.621250	-nan	-nan	-nan	-nan
+2.643750	-nan	-nan	-nan	-nan
+2.666250	-nan	-nan	-nan	-nan
+2.688750	-nan	-nan	-nan	-nan
+2.711250	-nan	-nan	-nan	-nan
+2.733750	-nan	-nan	-nan	-nan
+2.756250	-nan	-nan	-nan	-nan
+2.778750	-nan	-nan	-nan	-nan
+2.801250	-nan	-nan	-nan	-nan
+2.823750	-nan	-nan	-nan	-nan
+2.846250	-nan	-nan	-nan	-nan
+2.868750	-nan	-nan	-nan	-nan
+2.891250	-nan	-nan	-nan	-nan
+2.913750	-nan	-nan	-nan	-nan
+2.936250	-nan	-nan	-nan	-nan
+2.958750	-nan	-nan	-nan	-nan
+2.981250	-nan	-nan	-nan	-nan
+3.003750	-nan	-nan	-nan	-nan
+3.026250	-nan	-nan	-nan	-nan
+3.048750	-nan	-nan	-nan	-nan
+3.071250	-nan	-nan	-nan	-nan
+3.093750	-nan	-nan	-nan	-nan
+3.116250	-nan	-nan	-nan	-nan
+3.138750	-nan	-nan	-nan	-nan
+3.161250	-nan	-nan	-nan	-nan
+3.183750	-nan	-nan	-nan	-nan
+3.206250	-nan	-nan	-nan	-nan
+3.228750	-nan	-nan	-nan	-nan
+3.251250	-nan	-nan	-nan	-nan
+3.273750	-nan	-nan	-nan	-nan
+3.296250	-nan	-nan	-nan	-nan
+3.318750	-nan	-nan	-nan	-nan
+3.341250	-nan	-nan	-nan	-nan
+3.363750	-nan	-nan	-nan	-nan
+3.386250	-nan	-nan	-nan	-nan
+3.408750	-nan	-nan	-nan	-nan
+3.431250	-nan	-nan	-nan	-nan
+3.453750	-nan	-nan	-nan	-nan
+3.476250	-nan	-nan	-nan	-nan
+3.498750	-nan	-nan	-nan	-nan
+3.521250	-nan	-nan	-nan	-nan
+3.543750	-nan	-nan	-nan	-nan
+3.566250	-nan	-nan	-nan	-nan
+3.588750	-nan	-nan	-nan	-nan
+3.611250	-nan	-nan	-nan	-nan
+3.633750	-nan	-nan	-nan	-nan
+3.656250	-nan	-nan	-nan	-nan
+3.678750	-nan	-nan	-nan	-nan
+3.701250	-nan	-nan	-nan	-nan
+3.723750	-nan	-nan	-nan	-nan
+3.746250	-nan	-nan	-nan	-nan
+3.768750	-nan	-nan	-nan	-nan
+3.791250	-nan	-nan	-nan	-nan
+3.813750	-nan	-nan	-nan	-nan
+3.836250	-nan	-nan	-nan	-nan
+3.858750	-nan	-nan	-nan	-nan
+3.881250	-nan	-nan	-nan	-nan
+3.903750	-nan	-nan	-nan	-nan
+3.926250	-nan	-nan	-nan	-nan
+3.948750	-nan	-nan	-nan	-nan
+3.971250	-nan	-nan	-nan	-nan
+3.993750	-nan	-nan	-nan	-nan
+4.016250	-nan	-nan	-nan	-nan
+4.038750	-nan	-nan	-nan	-nan
+4.061250	-nan	-nan	-nan	-nan
+4.083750	-nan	-nan	-nan	-nan
+4.106250	-nan	-nan	-nan	-nan
+4.128750	-nan	-nan	-nan	-nan
+4.151250	-nan	-nan	-nan	-nan
+4.173750	-nan	-nan	-nan	-nan
+4.196250	-nan	-nan	-nan	-nan
+4.218750	-nan	-nan	-nan	-nan
+4.241250	-nan	-nan	-nan	-nan
+4.263750	-nan	-nan	-nan	-nan
+4.286250	-nan	-nan	-nan	-nan
+4.308750	-nan	-nan	-nan	-nan
+4.331250	-nan	-nan	-nan	-nan
+4.353750	-nan	-nan	-nan	-nan
+4.376250	-nan	-nan	-nan	-nan
+4.398750	-nan	-nan	-nan	-nan
+4.421250	-nan	-nan	-nan	-nan
+4.443750	-nan	-nan	-nan	-nan
+4.466250	-nan	-nan	-nan	-nan
+4.488750	-nan	-nan	-nan	-nan
+#Window		Free	+/-	
+#0	-nan	-nan
+#1	-nan	-nan
+#2	-nan	-nan
+#3	-nan	-nan
+#4	-nan	-nan
+#5	-nan	-nan
+#6	-nan	-nan
+#7	-nan	-nan
+#8	-nan	-nan
+#9	-nan	-nan
+#10	-nan	-nan
+#11	-nan	-nan
+#12	-nan	-nan
+#13	-nan	-nan
+#14	-nan	-nan
+#15	-nan	-nan
+#16	-nan	-nan
+#17	-nan	-nan
+#18	-nan	-nan
+#19	-nan	-nan
+#20	-nan	-nan

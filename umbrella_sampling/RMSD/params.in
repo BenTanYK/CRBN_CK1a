@@ -1,7 +1,7 @@
 """Run parameters"""
-run_number = 1
+run_number = 3
 run_location = 0 # workstation=0, cluster=1, eddie=2
-species = CRBN # Options are CRBN, CK1a, CRBN_only, CK1a_only, CRBNwithCK1a, CK1awithCRBN
+species = CK1a # Options are CRBN, CK1a, CRBN_only, CK1a_only, CRBNwithCK1a, CK1awithCRBN
 
 """MD parameters"""
 timestep = 4 # fs
