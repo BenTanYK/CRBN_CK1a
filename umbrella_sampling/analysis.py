@@ -404,7 +404,7 @@ def generate_metafile(free_energy_step, restraint_type, dof=None, equilibration=
             metafilelines.append(metafileline)                
 
         if plot==True:
-            if dof != 'Boresch':
+            if free_energy_step != 'Boresch':
                 plt.hist(10*data[:,1], bins=30, alpha=0.6, label=f"{CV_value}")
             else:
                 plt.hist(data[:,1], bins=30, alpha=0.6, label=f"{CV_value}")
@@ -557,7 +557,7 @@ def obtain_av_PMF(runs, free_energy_step, restraint_type, dof=None,
 
     if plot_indiv:
         plt.figure(figsize=(6,4), dpi=200)
-        plt.title('Individual PMFs')
+        plt.title(f'{free_energy_step} Individual PMFs')
 
     for n_run in runs:
         dirpath = os.path.join(resultspath, f"run{n_run}")
@@ -617,7 +617,7 @@ def obtain_av_PMF(runs, free_energy_step, restraint_type, dof=None,
 
     if plot_av:
         plt.figure(figsize=(6,4), dpi=200)
-        plt.title('Average PMF')
+        plt.title(f'{free_energy_step} Average PMF')
         if free_energy_step == 'Boresch':
             x_plot = x
         else:
