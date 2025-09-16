@@ -1,0 +1,22 @@
+# /home/btan/Software/WHAM/wham/wham/wham 2.0 2.7 200 1e-06 300 0 /home/btan/Documents/CRBN_CK1a/umbrella_sampling/Boresch/results/backbone_RMSD/phiA/run2//metafile.txt /home/btan/Documents/CRBN_CK1a/umbrella_sampling/Boresch/results/backbone_RMSD/phiA/run2//pmf.txt
+#Number of windows = 8
+#Iteration 10:  0.055314
+#Iteration 20:  0.015101
+#Iteration 30:  0.003840
+#Iteration 40:  0.000971
+#Iteration 50:  0.000245
+#Iteration 60:  0.000062
+#Iteration 70:  0.000016
+#Iteration 80:  0.000004
+#Iteration 90:  0.000001
+# Dumping simulation biases, in the metadata file order 
+# Window  F (free energy units)
+# 0	0.000000
+# 1	-0.640820
+# 2	-0.902450
+# 3	-0.650014
+# 4	0.113060
+# 5	1.165959
+# 6	2.308733
+# 7	3.263355
+# No MC error analysis requested
