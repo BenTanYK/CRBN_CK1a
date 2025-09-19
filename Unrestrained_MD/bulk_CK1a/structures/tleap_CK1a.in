@@ -1,0 +1,12 @@
+source leaprc.protein.ff19SB
+source leaprc.water.tip3p
+
+mol = loadpdb "CK1a_noH.pdb" 
+
+solvateOct mol TIP3PBOX 15.0 # Solvate system
+
+addions mol CL 0
+
+savepdb mol CK1a_solvated.pdb #Save the pdb file
+saveamberparm mol CK1a.prmtop CK1a.inpcrd #Save the topology and coordinate files
+quit #Quit tleap
